@@ -1,6 +1,8 @@
 package com.snutaek.lugilugiserver.global.auth
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.snutaek.lugilugiserver.domain.user.dto.UserDto
+import com.snutaek.lugilugiserver.global.auth.model.UserPrincipal
 import com.wafflestudio.seminar.global.auth.dto.LoginRequest
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -15,7 +17,8 @@ import javax.servlet.http.HttpServletResponse
 
 class SigninAuthenticationFilter(
     authenticationManager: AuthenticationManager?,
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val objectMapper: ObjectMapper
 ) : UsernamePasswordAuthenticationFilter(authenticationManager) {
     init {
         setRequiresAuthenticationRequestMatcher(AntPathRequestMatcher("/api/v1/user/signin/", "POST"))
@@ -27,10 +30,18 @@ class SigninAuthenticationFilter(
         chain: FilterChain,
         authResult: Authentication
     ) {
+        val token = jwtTokenProvider.generateToken(authResult)
         response.contentType = "application/json"
         response.characterEncoding = "utf-8"
-        response.addHeader("Authentication", jwtTokenProvider.generateToken(authResult))
-        response.status = HttpServletResponse.SC_NO_CONTENT
+        response.addHeader("Authentication", token)
+        // TODO ask front and erase token in body
+        response.status = HttpServletResponse.SC_OK // haha....
+
+        val out = response.writer
+        val principal = authResult.principal as UserPrincipal
+        val responseString = objectMapper.writeValueAsString(UserDto.SignupResponse(principal.user.id, token))
+        out.print(responseString)
+        out.flush()
     }
 
     override fun unsuccessfulAuthentication(

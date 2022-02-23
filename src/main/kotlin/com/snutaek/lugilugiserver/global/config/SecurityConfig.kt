@@ -1,5 +1,6 @@
 package com.snutaek.lugilugiserver.global.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.snutaek.lugilugiserver.global.auth.SigninAuthenticationFilter
 import com.snutaek.lugilugiserver.global.auth.JwtAuthenticationEntryPoint
 import com.snutaek.lugilugiserver.global.auth.JwtAuthenticationFilter
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 class SecurityConfig(
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
     private val jwtTokenProvider: JwtTokenProvider,
+    private val objectMapper: ObjectMapper, // added for.. signin response body
     private val userPrincipalDetailService: UserPrincipalDetailService
 ) : WebSecurityConfigurerAdapter() {
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -51,11 +53,11 @@ class SecurityConfig(
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .and()
-            .addFilter(SigninAuthenticationFilter(authenticationManager(), jwtTokenProvider))
+            .addFilter(SigninAuthenticationFilter(authenticationManager(), jwtTokenProvider, objectMapper))
             .addFilter(JwtAuthenticationFilter(authenticationManager(), jwtTokenProvider))
             .authorizeRequests()
-            .antMatchers("/api/v1/users/signin/").permitAll()  // Auth entrypoint
-            .antMatchers(HttpMethod.POST, "/api/v1/users/").anonymous()  // SignUp user
+            .antMatchers("/api/v1/user/signin/").permitAll()  // Auth entrypoint
+            .antMatchers(HttpMethod.POST, "/api/v1/user/signup/").anonymous()  // SignUp user
             .anyRequest().authenticated()
     }
 
