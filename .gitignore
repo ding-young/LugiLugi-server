@@ -71,4 +71,6 @@ hs_err_pid*
 
 ### properties ###
 src/**/application.yml
+src/**/application-prod.yml
+
 

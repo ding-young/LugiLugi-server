@@ -1,0 +1,23 @@
+app:
+  jwt:
+    jwt-secret-key: lugilugi
+    jwt-expiration-in-ms: 10800000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/lugilugi?serverTimezone=UTC
+    username: lugi-user
+    password: LugiLugi22^.^
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+      # create: 시작 시 테이블 drop 후 재생성
+      # update: 시작 시 자동 migrate
+      # none: db 그대로
+      # create-drop: 시작 시 테이블 create, 종료 시 drop
+    show-sql: true
