@@ -1,11 +1,12 @@
 package com.snutaek.lugilugiserver.domain.user.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
+
 
 @Entity
 @Table(name = "lugi_user")
@@ -20,6 +21,9 @@ class User (
 
     @field:NotBlank
     var password : String,
+
+    @JsonIgnore
+    val authorities: String = "User",
 
 
 ) : BaseTimeEntity()
