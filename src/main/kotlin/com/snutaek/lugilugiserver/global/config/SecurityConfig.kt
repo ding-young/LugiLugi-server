@@ -18,6 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -46,8 +49,24 @@ class SecurityConfig(
         return provider
     }
 
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val corsConfiguration = CorsConfiguration()
+        corsConfiguration.allowCredentials = true
+        corsConfiguration.addAllowedOrigin("http://localhost:3000") // TODO front url
+        corsConfiguration.addAllowedHeader("*")
+        corsConfiguration.addAllowedMethod("*")
+        corsConfiguration.addExposedHeader("Authentication")  // for jwt token.. 근데 지금 프론트는 바디로 받음
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", corsConfiguration)
+        return source
+    }
+
     override fun configure(http: HttpSecurity) {
         http
+            .cors().configurationSource(corsConfigurationSource())
+            .and()
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
