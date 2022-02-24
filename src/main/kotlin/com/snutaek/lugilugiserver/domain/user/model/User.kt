@@ -5,6 +5,7 @@ import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
+import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
 
@@ -12,12 +13,16 @@ import javax.validation.constraints.NotBlank
 @Table(name = "lugi_user")
 class User (
 
+    @Column(unique = true)
+    @Email
+    @field:NotBlank
+    var email : String,
+
     @field:NotBlank   // null, "", " " not allowed
     var username : String,
 
-    @Column(unique = true)
     @field:NotBlank
-    var userId : String,
+    var nickname : String,
 
     @field:NotBlank
     var password : String,

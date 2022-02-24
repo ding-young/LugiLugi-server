@@ -57,7 +57,7 @@ class SigninAuthenticationFilter(
         // Parse auth request
         val parsedRequest: LoginRequest = parseRequest(request)
         val authRequest: Authentication =
-            UsernamePasswordAuthenticationToken(parsedRequest.userId, parsedRequest.password)
+            UsernamePasswordAuthenticationToken(parsedRequest.email, parsedRequest.password)
         return authenticationManager.authenticate(authRequest)
     }
 
