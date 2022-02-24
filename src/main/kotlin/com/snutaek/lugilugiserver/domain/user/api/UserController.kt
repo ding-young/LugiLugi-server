@@ -19,7 +19,7 @@ class UserController (
     @PostMapping("/signup/")
     fun signup(@Valid @RequestBody signupRequest: UserDto.SignupRequest) : UserDto.SignupResponse {
         val user = userService.signup(signupRequest)
-        val token = jwtTokenProvider.generateToken(user.userId)
+        val token = jwtTokenProvider.generateToken(user.email)
         return UserDto.SignupResponse(user.id, token)  // TODO ask front and erase token in body (add it to header)
     }
 

@@ -13,8 +13,8 @@ class UserService (
 ) {
     fun signup(signupRequest: UserDto.SignupRequest) : User {
         // TODO erase tmp User & implement error handling
-        if (userRepository.existsByUserId(signupRequest.userId)) return User("tmp", "tmp", "tmp")
+        if (userRepository.existsByEmail(signupRequest.email)) return User("tmp", "tmp", "tmp", "tmp")
         val encodedPassword = passwordEncoder.encode(signupRequest.password)
-        return userRepository.save(User(signupRequest.username, signupRequest.userId, encodedPassword))
+        return userRepository.save(User(signupRequest.email, signupRequest.username, signupRequest.nickname, encodedPassword))
     }
 }
