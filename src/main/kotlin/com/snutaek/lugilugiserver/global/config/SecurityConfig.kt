@@ -6,6 +6,7 @@ import com.snutaek.lugilugiserver.global.auth.JwtAuthenticationEntryPoint
 import com.snutaek.lugilugiserver.global.auth.JwtAuthenticationFilter
 import com.snutaek.lugilugiserver.global.auth.JwtTokenProvider
 import com.snutaek.lugilugiserver.global.auth.model.UserPrincipalDetailService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -29,7 +30,7 @@ class SecurityConfig(
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
     private val jwtTokenProvider: JwtTokenProvider,
     private val objectMapper: ObjectMapper, // added for.. signin response body
-    private val userPrincipalDetailService: UserPrincipalDetailService
+    private val userPrincipalDetailService: UserPrincipalDetailService,
 ) : WebSecurityConfigurerAdapter() {
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.authenticationProvider(daoAuthenticationProvider())
@@ -49,11 +50,16 @@ class SecurityConfig(
         return provider
     }
 
+    @Value("\${mobile}")  // TODO tmp
+    lateinit var mobile: String
+
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val corsConfiguration = CorsConfiguration()
         corsConfiguration.allowCredentials = true
         corsConfiguration.addAllowedOrigin("http://localhost:3000") // TODO front url
+        corsConfiguration.addAllowedOrigin("https://d3rvdfuvmiieqv.cloudfront.net/") // TODO front url
+        corsConfiguration.addAllowedOrigin(mobile) // TODO front url
         corsConfiguration.addAllowedHeader("*")
         corsConfiguration.addAllowedMethod("*")
         corsConfiguration.addExposedHeader("Authentication")  // for jwt token.. 근데 지금 프론트는 바디로 받음
