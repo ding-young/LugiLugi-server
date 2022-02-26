@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+            MYSQL_DATABASE: 'lugilugi'
+            MYSQL_USER: 'lugi-user'
+            MYSQL_PASSWORD: 'LugiLugi22^.^'
+            MYSQL_ROOT_PASSWORD: password
+        ports:
+            - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      max-parallel: 4
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: gradle
+          
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew    
+
+      - name: Run test
+        run: ./gradlew test
