@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: test
+mobile: tmp
+app:
+  jwt:
+    jwt-secret-key: lugilugi
+    jwt-expiration-in-ms: 10800000
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:mysql://localhost:3306/lugilugi?serverTimezone=UTC
+    username: lugi-user
+    password: LugiLugi22^.^
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
