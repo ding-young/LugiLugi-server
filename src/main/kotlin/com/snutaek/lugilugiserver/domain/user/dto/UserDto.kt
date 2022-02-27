@@ -19,13 +19,15 @@ class UserDto {
         val id: Long,
         val email: String,
         val username: String,
-        val nickname: String
+        val nickname: String,
+        val code: String,
     ) {
         constructor(user: User) : this(
             id = user.id,
             email = user.email,
             username = user.username,
-            nickname = user.nickname
+            nickname = user.nickname,
+            code = user.code,
         )
 
     }
