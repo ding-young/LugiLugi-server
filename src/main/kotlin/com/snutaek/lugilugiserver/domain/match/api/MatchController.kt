@@ -1,20 +1,33 @@
 package com.snutaek.lugilugiserver.domain.match.api
 
-import com.snutaek.lugilugiserver.domain.match.dto.GroupDto
-import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.messaging.handler.annotation.SendTo
+import com.snutaek.lugilugiserver.domain.group.dto.GroupDto
+import com.snutaek.lugilugiserver.domain.match.dto.MatchDto
+import com.snutaek.lugilugiserver.domain.match.service.MatchService
+import com.snutaek.lugilugiserver.global.common.dto.ListResponse
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
+@RequestMapping("api/v1/match")
 @RestController
 class MatchController (
+    private val matchService: MatchService
 ) {
-    @MessageMapping("/match/penalty")
-    @SendTo("/match/penalty_result")
-    fun sendMessage(@Payload penaltyRequest: GroupDto.PenaltyRequest): GroupDto.PenaltyResponse? {
-        if (penaltyRequest.blue_penalty) return GroupDto.PenaltyResponse("blue got penalty")
-        if (penaltyRequest.red_penalty) return GroupDto.PenaltyResponse("red got penalty")
-        return GroupDto.PenaltyResponse("nobody got penalty")
+    @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createMatch(@RequestBody createMatchRequest: MatchDto.CreateMatchRequest) : MatchDto.BaseResponse {
+        val match = matchService.createMatch(createMatchRequest)
+        return MatchDto.BaseResponse(match)
+    }
+
+    @GetMapping("/{matchId}/")
+    fun getMatch(@PathVariable matchId: Long) : MatchDto.DetailResponse {
+        val match = matchService.findById(matchId)
+        return MatchDto.DetailResponse(match)
     }
 }
