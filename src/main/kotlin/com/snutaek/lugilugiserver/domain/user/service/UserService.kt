@@ -1,10 +1,14 @@
 package com.snutaek.lugilugiserver.domain.user.service
 
+import com.snutaek.lugilugiserver.domain.match.exception.MatchNotFoundException
+import com.snutaek.lugilugiserver.domain.match.model.Match
 import com.snutaek.lugilugiserver.domain.user.dto.UserDto
 import com.snutaek.lugilugiserver.domain.user.exception.UserEmailAlreadyExistsException
+import com.snutaek.lugilugiserver.domain.user.exception.UserNotFoundException
 import com.snutaek.lugilugiserver.domain.user.model.User
 import com.snutaek.lugilugiserver.domain.user.repository.UserRepository
 import com.snutaek.lugilugiserver.domain.user.util.RandomCodeGenerator
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -26,5 +30,9 @@ class UserService (
         val code = randomCodeGenerator.generateRandomUniqueUserCode()
         if (userRepository.existsByCode(code)) return createUserUniqueCode()
         return code
+    }
+
+    fun findById(id: Long) : User {
+        return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User $id 에 해당하는 User는 존재하지 않습니다")
     }
 }

@@ -1,16 +1,13 @@
 package com.snutaek.lugilugiserver.domain.user.api
 
+import com.snutaek.lugilugiserver.domain.match.dto.MatchDto
 import com.snutaek.lugilugiserver.domain.user.dto.UserDto
 import com.snutaek.lugilugiserver.domain.user.model.User
 import com.snutaek.lugilugiserver.domain.user.service.UserService
 import com.snutaek.lugilugiserver.global.auth.CurrentUser
 import com.snutaek.lugilugiserver.global.auth.JwtTokenProvider
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
@@ -28,6 +25,12 @@ class UserController (
 
     @GetMapping("/me/")
     fun getCurrentUser(@CurrentUser user: User): UserDto.BaseResponse {
+        return UserDto.BaseResponse(user)
+    }
+
+    @GetMapping("/{userId}/")
+    fun getMatch(@PathVariable userId: Long) : UserDto.BaseResponse {
+        val user = userService.findById(userId)
         return UserDto.BaseResponse(user)
     }
 
