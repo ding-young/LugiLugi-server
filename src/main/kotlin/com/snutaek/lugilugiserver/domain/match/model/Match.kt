@@ -6,10 +6,12 @@ import com.snutaek.lugilugiserver.domain.user.model.User
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.OneToOne
+import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
+@Table(name = "lugi_match")
 class Match (
     @OneToOne   // later there will be multiple judges
     var judge: User?,
