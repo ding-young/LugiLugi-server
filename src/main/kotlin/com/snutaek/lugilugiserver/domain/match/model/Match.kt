@@ -7,6 +7,8 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.OneToOne
 import javax.persistence.Table
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
@@ -29,12 +31,17 @@ class Match (
     @field:NotNull
     val roundCount: Int,
 
-    // time : 1 represents 30 sec
+    // time: 10 represents 10s
+    @field:Min(60, message = "The roundtime must be between 60 and 180")
+    @field:Max(180, message = "The roundtime must be between 60 and 180")
     @field:NotNull
-    val roundTime: Int, // 2 to 6
+    val roundTime: Int, // 60 to 180s
 
+
+    @field:Min(10, message = "The breaktime must be between 10 and 60")
+    @field:Max(60, message = "The breaktime must be between 10 and 60")
     @field:NotNull
-    val breakTime: Int,  // 1 to 2
+    val breakTime: Int,  // 10s to 60s
     // match result -> another model?
 
     @Column(unique = true)
