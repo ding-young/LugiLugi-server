@@ -62,8 +62,8 @@ class MatchMessageController (
 
     @MessageMapping("ping/")
     @SendTo("/subscribe/pong/")
-    fun wsPing(): String {
-        return "ws pong"
+    fun wsPing(): MatchMessage.SimpleMessage {
+        return MatchMessage.SimpleMessage("pong")
     }
 
 }

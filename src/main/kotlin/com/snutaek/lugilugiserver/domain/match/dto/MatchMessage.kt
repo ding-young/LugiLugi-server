@@ -41,6 +41,11 @@ class MatchMessage {
         val type: FlowMessageType
     )
 
+    data class SimpleMessage(
+        @field:NotBlank
+        val content: String
+    )
+
     data class ScoreResponseMessage(
         val redScore: Int,
         val blueScore: Int,
