@@ -26,6 +26,8 @@ class Match (
     @OneToOne
     val blue: User,
 
+    var redScore: Int = 0,
+    var blueScore: Int = 0,
     var judgeCount: Int = 1,
 
     @field:NotNull
