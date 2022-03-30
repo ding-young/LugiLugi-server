@@ -32,7 +32,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 class WebSocketConfig : WebSocketMessageBrokerConfigurer {
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("https://d3rvdfuvmiieqv.cloudfront.net", "http://localhost:3000").withSockJS()
+        registry.addEndpoint("/ws").setAllowedOrigins("https://d3rvdfuvmiieqv.cloudfront.net", "http://localhost:3000", "http://localhost:8080").withSockJS()
     }
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
