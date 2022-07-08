@@ -58,4 +58,16 @@ class MatchService (
         match.blueScore += score
         return matchRepository.save(match)
     }
+
+    // 사실 score 나 penalty 나 같은 걸로 처리할 수 있음 근데 음수로 저장할지, 점수 매기기나 감점 이루어질 때 트리거 되는 ?
+    // 체크하는 로직이 어케 달라지는 지 고민 좀
+    fun penaltyRed(match: Match) : Match {
+        match.redPenalty += 1
+        return matchRepository.save(match)
+    }
+
+    fun penaltyBlue(match: Match) : Match {
+        match.bluePenalty += 1
+        return matchRepository.save(match)
+    }
 }

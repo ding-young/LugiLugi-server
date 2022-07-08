@@ -60,6 +60,19 @@ class MatchMessageController (
         return MatchMessage.ScoreResponseMessage(match)
     }
 
+    // Score랑 penalty를 별도로 두어야 할 이유? 다른 로직으로 처리하게 되나?? 더 고민
+    @MessageMapping("/{inviteCode}/penalty")
+    @SendTo("/subscribe/{inviteCode}")
+    fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @PathVariable inviteCode:String): MatchMessage.PenaltyResponseMessage {
+        var match = matchService.findByInviteCode(inviteCode)
+        if (penaltyMessage.player == PlayerType.RED) {
+            match = matchService.penaltyRed(match)
+        } else {
+            match = matchService.penaltyBlue(match)
+        }
+        return MatchMessage.PenaltyResponseMessage(match)
+    }
+
     @MessageMapping("/ping")
     @SendTo("/subscribe/pong")
     fun wsPing(): MatchMessage.SimpleMessage {
