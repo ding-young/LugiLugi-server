@@ -28,6 +28,8 @@ class Match (
 
     var redScore: Int = 0,
     var blueScore: Int = 0,
+    var redPenalty: Int = 0,   // TODO
+    var bluePenalty: Int = 0,  // TODO
     var judgeCount: Int = 1,
 
     @field:NotNull

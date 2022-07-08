@@ -24,14 +24,14 @@ class MatchMessage {
         @field:NotBlank
         val player: PlayerType,  // red or blue
         @field:NotBlank
-        val score: String  // 1 2 3 -1
+        val score: String  // 1 2 3 -1 TODO -1 ?? to Penalty?
     )
 
     data class PenaltyMessage(
         @field:NotBlank
         val judge: String,
         @field:NotBlank
-        val player: String  // red or blue
+        val player: PlayerType  // red or blue
     )
 
     data class FlowMessage(
@@ -53,6 +53,16 @@ class MatchMessage {
         constructor(match: Match) : this(
             redScore = match.redScore,
             blueScore = match.blueScore
+        )
+    }
+
+    data class PenaltyResponseMessage(
+        val redPenalty: Int,
+        val bluePenalty: Int,
+    ) {
+        constructor(match: Match) : this(
+            redPenalty = match.redPenalty,
+            bluePenalty = match.bluePenalty
         )
     }
 }
