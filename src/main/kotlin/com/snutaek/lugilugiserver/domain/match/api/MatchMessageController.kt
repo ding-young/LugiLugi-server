@@ -18,6 +18,7 @@ class MatchMessageController (
     private val matchService: MatchService,
     private val userService: UserService
 ) {
+    // 이거 아마 안 쓰임 밑에 꺼가 진짜.
     @MessageMapping("ws/penalty")
     @SendTo("/penalty_result")
     fun sendMessage(@Payload penaltyRequest: MatchDto.PenaltyRequest): MatchDto.PenaltyResponse? {
@@ -44,8 +45,8 @@ class MatchMessageController (
 
     @MessageMapping("/{inviteCode}/flow")
     @SendTo("/subscribe/{inviteCode}")
-    fun controlMatchFlow(@Payload flowMessage: MatchMessage.FlowMessage, @PathVariable inviteCode:String): MatchMessage.FlowMessage {
-        return flowMessage
+    fun controlMatchFlow(@Payload flowMessage: MatchMessage.FlowMessage, @PathVariable inviteCode:String): MatchMessage.SimpleMessage {
+        return MatchMessage.SimpleMessage("flow") // flowMessage
     }
 
     @MessageMapping("/{inviteCode}/score")
@@ -60,7 +61,7 @@ class MatchMessageController (
         return MatchMessage.ScoreResponseMessage(match)
     }
 
-    // Score랑 penalty를 별도로 두어야 할 이유? 다른 로직으로 처리하게 되나?? 더 고민
+    // Score랑 penalty를 별도로 두어야 할 이유? 다른 로직으로 처리하게 되나?? 더 고민 상대한테 일점이 올라감
     @MessageMapping("/{inviteCode}/penalty")
     @SendTo("/subscribe/{inviteCode}")
     fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @PathVariable inviteCode:String): MatchMessage.PenaltyResponseMessage {
