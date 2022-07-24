@@ -30,18 +30,20 @@ class AttendanceController (
     fun getMyAttendance(
         @CurrentUser user: User, // Q. 다른 사람의 월별 출석 기록 알 일이 있나?
         @RequestParam(value="year", required = true) year: Year,
-        @RequestParam(value="month", required = true) month: Month
+        @RequestParam(value="month", required = true) month: Int,
     ) : ListResponse<LocalDate> {
-        val dates = attendanceService.getUserAttendanceInMonth(user, year, month)
+        val dates = attendanceService.getUserAttendanceInMonth(user, year, Month.of(month))
         return ListResponse(dates)
     }
 
     @GetMapping("/")
     fun getAttendants(
         @CurrentUser user: User,
-        @RequestParam(value="date", required = true) date: LocalDate,
+        @RequestParam(value="year", required = true) year: Int,
+        @RequestParam(value="month", required = true) month: Int,
+        @RequestParam(value="day", required = true) day: Int,
     ) : ListResponse<UserDto.BaseResponse> {
-        val users = attendanceService.getAllAttendantsInDay(date)
+        val users = attendanceService.getAllAttendantsInDay(LocalDate.of(year, month, day))
         return ListResponse(users.map { UserDto.BaseResponse(it) })
     }
 }
