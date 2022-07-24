@@ -1,6 +1,7 @@
 package com.snutaek.lugilugiserver.domain.user.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.snutaek.lugilugiserver.domain.attendance.model.Attendance
 import com.snutaek.lugilugiserver.domain.group.model.Group
 import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
 import javax.persistence.*
@@ -36,4 +37,7 @@ class User (
     @Column(unique = true)
     @field:NotBlank
     val code : String,   // val ? var?
+
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user")
+    val attendances : List<Attendance> = listOf()
     ) : BaseTimeEntity()
