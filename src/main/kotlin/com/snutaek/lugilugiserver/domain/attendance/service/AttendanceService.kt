@@ -1,17 +1,12 @@
-package com.snutaek.lugilugiserver.domain.group.service
+package com.snutaek.lugilugiserver.domain.attendance.service
 
 import com.snutaek.lugilugiserver.domain.attendance.exception.ScheduleNotFoundException
 import com.snutaek.lugilugiserver.domain.attendance.model.Schedule
 import com.snutaek.lugilugiserver.domain.attendance.repository.ScheduleRepository
-import com.snutaek.lugilugiserver.domain.group.dto.GroupDto
-import com.snutaek.lugilugiserver.domain.group.exception.GroupNameAlreadyExistsException
-import com.snutaek.lugilugiserver.domain.group.exception.GroupNotFoundException
-import com.snutaek.lugilugiserver.domain.group.model.Attendance
-import com.snutaek.lugilugiserver.domain.group.repository.AttendanceRepository
-import com.snutaek.lugilugiserver.domain.user.exception.UserNotFoundException
+import com.snutaek.lugilugiserver.domain.attendance.model.Attendance
+import com.snutaek.lugilugiserver.domain.attendance.repository.AttendanceRepository
 import com.snutaek.lugilugiserver.domain.user.model.User
 import com.snutaek.lugilugiserver.domain.user.repository.UserRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.*
@@ -27,6 +22,7 @@ class AttendanceService (
     }
 
     fun markAttendance(user: User, schedule: Schedule) : Attendance {
+        print("hi")
         return attendanceRepository.save(Attendance(user, schedule))
     }
 

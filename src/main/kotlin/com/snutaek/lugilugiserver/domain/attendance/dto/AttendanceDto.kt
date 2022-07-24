@@ -1,7 +1,6 @@
 package com.snutaek.lugilugiserver.domain.attendance.dto
 
-import com.snutaek.lugilugiserver.domain.group.model.Attendance
-import com.snutaek.lugilugiserver.domain.user.dto.UserDto
+import com.snutaek.lugilugiserver.domain.attendance.model.Attendance
 import java.time.LocalDate
 import javax.validation.constraints.NotBlank
 

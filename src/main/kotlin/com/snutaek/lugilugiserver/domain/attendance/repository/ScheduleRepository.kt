@@ -1,7 +1,6 @@
 package com.snutaek.lugilugiserver.domain.attendance.repository
 
 import com.snutaek.lugilugiserver.domain.attendance.model.Schedule
-import com.snutaek.lugilugiserver.domain.group.model.Attendance
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

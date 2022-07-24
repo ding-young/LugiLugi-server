@@ -1,9 +1,7 @@
 package com.snutaek.lugilugiserver.domain.attendance.api
 
 import com.snutaek.lugilugiserver.domain.attendance.dto.AttendanceDto
-import com.snutaek.lugilugiserver.domain.group.dto.GroupDto
-import com.snutaek.lugilugiserver.domain.group.model.Attendance
-import com.snutaek.lugilugiserver.domain.group.service.AttendanceService
+import com.snutaek.lugilugiserver.domain.attendance.service.AttendanceService
 import com.snutaek.lugilugiserver.domain.user.dto.UserDto
 import com.snutaek.lugilugiserver.domain.user.model.User
 import com.snutaek.lugilugiserver.global.auth.CurrentUser
@@ -38,10 +36,10 @@ class AttendanceController (
         return ListResponse(dates)
     }
 
-    @PostMapping("/")
+    @GetMapping("/")
     fun getAttendants(
         @CurrentUser user: User,
-        @PathVariable date: LocalDate,
+        @RequestParam(value="date", required = true) date: LocalDate,
     ) : ListResponse<UserDto.BaseResponse> {
         val users = attendanceService.getAllAttendantsInDay(date)
         return ListResponse(users.map { UserDto.BaseResponse(it) })

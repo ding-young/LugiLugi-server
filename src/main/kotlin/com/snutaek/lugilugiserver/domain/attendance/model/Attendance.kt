@@ -1,4 +1,4 @@
-package com.snutaek.lugilugiserver.domain.group.model
+package com.snutaek.lugilugiserver.domain.attendance.model
 
 import com.snutaek.lugilugiserver.domain.attendance.model.Schedule
 import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
@@ -8,10 +8,10 @@ import javax.persistence.*
 @Entity
 @Table(name = "attendance")  // user_schedule mapping table
 class Attendance (
-    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     val user: User,
 
-    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     val schedule: Schedule,
 
     ) : BaseTimeEntity()
