@@ -1,7 +1,7 @@
 package com.snutaek.lugilugiserver.domain.user.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.snutaek.lugilugiserver.domain.group.model.Attendance
+import com.snutaek.lugilugiserver.domain.attendance.model.Attendance
 import com.snutaek.lugilugiserver.domain.group.model.Group
 import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
 import javax.persistence.*
