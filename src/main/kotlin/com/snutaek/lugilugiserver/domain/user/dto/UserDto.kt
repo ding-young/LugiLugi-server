@@ -15,6 +15,12 @@ class UserDto {
         val password: String,
     )
 
+    data class EditProfileRequest(
+        val username: String?,
+        val nickname: String?,
+        val intro: String?,
+    )
+
     data class BaseResponse(
         val id: Long,
         val email: String,
@@ -36,4 +42,18 @@ class UserDto {
         val id: Long,
         val token: String
     )
+
+    data class ProfileResponse(
+        val username: String,
+        val nickname: String,
+        val intro: String,
+        // TODO image
+    ) {
+        constructor(user: User) : this(
+            username = user.username,
+            nickname = user.nickname,
+            intro = user.intro,
+        )
+
+    }
 }
