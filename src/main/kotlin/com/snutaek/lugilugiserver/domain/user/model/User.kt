@@ -38,6 +38,8 @@ class User (
     @field:NotBlank
     val code : String,   // val ? var?
 
+    var profileS3ObjectKey: String? = null,
+
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user")
     val attendances : List<Attendance> = listOf()
     ) : BaseTimeEntity()

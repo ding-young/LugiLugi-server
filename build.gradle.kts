@@ -33,6 +33,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 
     implementation("org.hibernate.validator:hibernate-validator")
+
+    implementation("com.amazonaws:aws-java-sdk-s3:1.11.478")
 }
 
 tasks.withType<KotlinCompile> {
