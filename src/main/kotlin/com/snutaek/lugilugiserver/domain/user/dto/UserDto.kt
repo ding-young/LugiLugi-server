@@ -18,7 +18,6 @@ class UserDto {
     data class EditProfileRequest(
         val username: String?,
         val nickname: String?,
-        val intro: String?,
     )
 
     data class BaseResponse(
@@ -46,13 +45,11 @@ class UserDto {
     data class ProfileResponse(
         val username: String,
         val nickname: String,
-        val intro: String,
         // TODO image
     ) {
         constructor(user: User) : this(
             username = user.username,
             nickname = user.nickname,
-            intro = user.intro,
         )
 
     }

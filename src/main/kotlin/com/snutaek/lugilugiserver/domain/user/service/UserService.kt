@@ -39,11 +39,9 @@ class UserService (
     fun editProfile(user: User, editProfileRequest: UserDto.EditProfileRequest) : User {
         val username = editProfileRequest.username
         val nickname = editProfileRequest.nickname
-        val intro = editProfileRequest.intro
         // TODO q. refactor..?
         if (username!=null) user.username = username
         if (nickname!=null) user.nickname = nickname
-        if (intro!=null) user.username = intro
 
         return userRepository.save(user)
     }

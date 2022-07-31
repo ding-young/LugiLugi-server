@@ -27,8 +27,6 @@ class User (
     @field:NotBlank
     var password : String,
 
-    var intro : String, // 얘가 소개??
-
     @JsonIgnore
     val authorities: String = "User",
 
