@@ -46,6 +46,20 @@ class MatchMessage {
         val content: String
     )
 
+    data class JoinResponseMessage(
+        val userId: String,  // id
+        val inviteCode: String,
+        val type: MatchMessageType,
+        var errorType: String = "Success",
+        var detail: String = "정의된 에러가 발생하지 않았습니다."
+    ) {
+        constructor(joinMessage: JoinMessage) : this(
+            userId = joinMessage.userId,
+            inviteCode = joinMessage.inviteCode,
+            type = joinMessage.type,
+        )
+    }
+
     data class ScoreResponseMessage(
         val redScore: Int,
         val blueScore: Int,

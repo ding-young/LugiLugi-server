@@ -6,6 +6,7 @@ import com.snutaek.lugilugiserver.domain.match.service.MatchService
 import com.snutaek.lugilugiserver.domain.match.util.FlowMessageType
 import com.snutaek.lugilugiserver.domain.match.util.MatchMessageType
 import com.snutaek.lugilugiserver.domain.match.util.PlayerType
+import com.snutaek.lugilugiserver.domain.user.exception.UserNotFoundException
 import com.snutaek.lugilugiserver.domain.user.service.UserService
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -35,13 +36,17 @@ class MatchMessageController (
 
     @MessageMapping("/{inviteCode}/join")
     @SendTo("/subscribe/{inviteCode}")
-    fun joinMatchRoom(@Payload joinMessage: MatchMessage.JoinMessage, @PathVariable inviteCode:String): MatchMessage.JoinMessage {
+    fun joinMatchRoom(@Payload joinMessage: MatchMessage.JoinMessage, @PathVariable inviteCode:String): MatchMessage.JoinResponseMessage {
         if (joinMessage.type == MatchMessageType.JUDGE) {
-            val judge = userService.findById(joinMessage.userId.toLong())
+            val judge = try {
+                userService.findById(joinMessage.userId.toLong())
+            } catch (e: UserNotFoundException) {
+                return MatchMessage.JoinResponseMessage("", "", MatchMessageType.JUDGE, "USER_NOT_FOUND", "{${joinMessage.userId}에 해당하는 user가 없습니다.}")
+            }
             matchService.assignJudge(judge, joinMessage.inviteCode)  // how to check?
             print("original message was ${joinMessage.type}, ${joinMessage.userId}, ${joinMessage.inviteCode}, " )
         }
-        return joinMessage
+        return MatchMessage.JoinResponseMessage(joinMessage)
     }
 
     @MessageMapping("/{inviteCode}/flow")
@@ -53,6 +58,7 @@ class MatchMessageController (
     @MessageMapping("/{inviteCode}/score")
     @SendTo("/subscribe/{inviteCode}")
     fun scoreMatch(@Payload judgeMessage: MatchMessage.JudgeMessage, @PathVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
+        print("inviteCode is {$inviteCode}")
         var match = matchService.findByInviteCode(inviteCode)
             ?: return MatchMessage.ScoreResponseMessage(-1, -1, "MATCH_NOT_FOUND", "{$inviteCode} 에 해당하는 match 가 없습니다.")
         if (judgeMessage.player == PlayerType.RED) {
