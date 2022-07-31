@@ -29,9 +29,17 @@ class UserController (
     }
 
     @GetMapping("/{userId}/")
-    fun getMatch(@PathVariable userId: Long) : UserDto.BaseResponse {
+    fun getUser(@PathVariable userId: Long) : UserDto.BaseResponse {
         val user = userService.findById(userId)
         return UserDto.BaseResponse(user)
+    }
+
+    @PutMapping("/me/profile/")
+    fun editProfile(
+        @CurrentUser user: User,
+        @Valid @RequestBody editProfileRequest: UserDto.EditProfileRequest
+    ) : UserDto.ProfileResponse{
+        return UserDto.ProfileResponse(userService.editProfile(user, editProfileRequest))
     }
 
     @GetMapping("/ping/")

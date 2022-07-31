@@ -35,4 +35,14 @@ class UserService (
     fun findById(id: Long) : User {
         return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User $id 에 해당하는 User는 존재하지 않습니다")
     }
+
+    fun editProfile(user: User, editProfileRequest: UserDto.EditProfileRequest) : User {
+        val username = editProfileRequest.username
+        val nickname = editProfileRequest.nickname
+        // TODO q. refactor..?
+        if (username!=null) user.username = username
+        if (nickname!=null) user.nickname = nickname
+
+        return userRepository.save(user)
+    }
 }
