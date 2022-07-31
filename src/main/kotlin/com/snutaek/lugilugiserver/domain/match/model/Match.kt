@@ -1,6 +1,7 @@
 package com.snutaek.lugilugiserver.domain.match.model
 
 
+import com.snutaek.lugilugiserver.domain.match.util.FlowType
 import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
 import com.snutaek.lugilugiserver.domain.user.model.User
 import javax.persistence.Column
@@ -51,4 +52,6 @@ class Match (
     @Column(unique = true)
     @field:NotBlank
     val inviteCode : String,
+
+    var flowType : FlowType = FlowType.STOP
 ) : BaseTimeEntity()

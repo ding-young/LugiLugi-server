@@ -1,7 +1,7 @@
 package com.snutaek.lugilugiserver.domain.match.dto
 
 import com.snutaek.lugilugiserver.domain.match.model.Match
-import com.snutaek.lugilugiserver.domain.match.util.FlowMessageType
+import com.snutaek.lugilugiserver.domain.match.util.FlowType
 import com.snutaek.lugilugiserver.domain.match.util.MatchMessageType
 import com.snutaek.lugilugiserver.domain.match.util.PlayerType
 import javax.validation.constraints.NotBlank
@@ -39,7 +39,7 @@ class MatchMessage {
         @field:NotBlank
         val judge: String,
         @field:NotBlank
-        val type: FlowMessageType
+        val flowtype: FlowType
     )
 
     data class SimpleMessage(
@@ -58,6 +58,16 @@ class MatchMessage {
             userId = joinMessage.userId,
             inviteCode = joinMessage.inviteCode,
             type = joinMessage.type,
+        )
+    }
+
+    data class FlowResponseMessage(
+        var flowtype: FlowType,
+        var errorType: String = "Success",
+        var detail: String = "정의된 에러가 발생하지 않았습니다." // TODO 상속 ?
+    ) {
+        constructor(match: Match) : this(
+            flowtype = match.flowType
         )
     }
 
