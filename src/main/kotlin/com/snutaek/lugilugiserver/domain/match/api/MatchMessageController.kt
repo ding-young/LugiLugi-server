@@ -45,10 +45,10 @@ class MatchMessageController (
     fun scoreMatch(@Payload judgeMessage: MatchMessage.JudgeMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
             ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail ="{$inviteCode} 에 해당하는 match 가 없습니다.")
-        if (judgeMessage.player == PlayerType.RED) {
-            match = matchService.scoreRed(match, judgeMessage.score.toInt())
+        match = if (judgeMessage.player == PlayerType.RED) {
+            matchService.scoreRed(match, judgeMessage.score.toInt())
         } else {
-            match = matchService.scoreBlue(match, judgeMessage.score.toInt())
+            matchService.scoreBlue(match, judgeMessage.score.toInt())
         }
         return MatchMessage.ScoreResponseMessage(match)
     }
@@ -59,10 +59,10 @@ class MatchMessageController (
     fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
             ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail = "{$inviteCode} 에 해당하는 match 가 없습니다.")
-        if (penaltyMessage.player == PlayerType.RED) {
-            match = matchService.penaltyRed(match)
+        match = if (penaltyMessage.player == PlayerType.RED) {
+            matchService.penaltyRed(match)
         } else {
-            match = matchService.penaltyBlue(match)
+            matchService.penaltyBlue(match)
         }
         return MatchMessage.ScoreResponseMessage(match)
     }
