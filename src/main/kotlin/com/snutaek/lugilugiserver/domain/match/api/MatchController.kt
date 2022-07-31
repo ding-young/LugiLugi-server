@@ -2,6 +2,7 @@ package com.snutaek.lugilugiserver.domain.match.api
 
 import com.snutaek.lugilugiserver.domain.group.dto.GroupDto
 import com.snutaek.lugilugiserver.domain.match.dto.MatchDto
+import com.snutaek.lugilugiserver.domain.match.exception.MatchNotFoundException
 import com.snutaek.lugilugiserver.domain.match.service.MatchService
 import com.snutaek.lugilugiserver.global.common.dto.ListResponse
 import org.springframework.http.HttpStatus
@@ -28,6 +29,13 @@ class MatchController (
     @GetMapping("/{matchId}/")
     fun getMatch(@PathVariable matchId: Long) : MatchDto.DetailResponse {
         val match = matchService.findById(matchId)
+        return MatchDto.DetailResponse(match)
+    }
+
+    // api for debugging..
+    @GetMapping("/inviteCode/{inviteCode}/")
+    fun getMatch(@PathVariable inviteCode: String) : MatchDto.DetailResponse {
+        val match = matchService.findByInviteCode(inviteCode) ?: throw MatchNotFoundException("해당하는 match 못찾음")
         return MatchDto.DetailResponse(match)
     }
 }
