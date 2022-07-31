@@ -44,21 +44,18 @@ class MatchService (
     }
 
     fun assignJudge(judge: User, inviteCode: String) : Unit {
-        val match = findByInviteCode(inviteCode)
-        if (match == null) return
+        val match = findByInviteCode(inviteCode) ?: return
         match.judge = judge
         matchRepository.save(match)
     }
 
     fun scoreRed(match: Match, score: Int) : Match {
         match.redScore += score
-        print("matchservice score Red works fine?")
         return matchRepository.save(match)
     }
 
     fun scoreBlue(match: Match, score: Int) : Match {
         match.blueScore += score
-        print("matchservice score Blue works fine?")
         return matchRepository.save(match)
     }
 
@@ -66,11 +63,13 @@ class MatchService (
     // 체크하는 로직이 어케 달라지는 지 고민 좀
     fun penaltyRed(match: Match) : Match {
         match.redPenalty += 1
+        match.blueScore += 1
         return matchRepository.save(match)
     }
 
     fun penaltyBlue(match: Match) : Match {
         match.bluePenalty += 1
+        match.redScore += 1
         return matchRepository.save(match)
     }
 }

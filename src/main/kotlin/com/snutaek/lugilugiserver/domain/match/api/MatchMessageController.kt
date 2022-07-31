@@ -42,7 +42,7 @@ class MatchMessageController (
             val judge = try {
                 userService.findById(joinMessage.userId.toLong())
             } catch (e: UserNotFoundException) {
-                return MatchMessage.JoinResponseMessage("", "", MatchMessageType.JUDGE, "USER_NOT_FOUND", "{${joinMessage.userId}에 해당하는 user가 없습니다.}")
+                return MatchMessage.JoinResponseMessage(type = MatchMessageType.JUDGE, errorType = "USER_NOT_FOUND", detail = "{${joinMessage.userId}에 해당하는 user가 없습니다.}")
             }
             matchService.assignJudge(judge, joinMessage.inviteCode)  // how to check?
             print("original message was ${joinMessage.type}, ${joinMessage.userId}, ${joinMessage.inviteCode}, " )
@@ -61,7 +61,7 @@ class MatchMessageController (
     fun scoreMatch(@Payload judgeMessage: MatchMessage.JudgeMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         print("inviteCode is {$inviteCode}")
         var match = matchService.findByInviteCode(inviteCode)
-            ?: return MatchMessage.ScoreResponseMessage(-1, -1, "MATCH_NOT_FOUND", "{$inviteCode} 에 해당하는 match 가 없습니다.")
+            ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail ="{$inviteCode} 에 해당하는 match 가 없습니다.")
         if (judgeMessage.player == PlayerType.RED) {
             match = matchService.scoreRed(match, judgeMessage.score.toInt())
             print("Red got score and redname is ${match.red.username}")
@@ -75,15 +75,15 @@ class MatchMessageController (
     // Score랑 penalty를 별도로 두어야 할 이유? 다른 로직으로 처리하게 되나?? 더 고민 상대한테 일점이 올라감
     @MessageMapping("/{inviteCode}/penalty")
     @SendTo("/subscribe/{inviteCode}")
-    fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @DestinationVariable inviteCode:String): MatchMessage.PenaltyResponseMessage {
+    fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
-            ?: return MatchMessage.PenaltyResponseMessage(404, 404, "MATCH_NOT_FOUND", "{$inviteCode} 에 해당하는 match 가 없습니다.")
+            ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail = "{$inviteCode} 에 해당하는 match 가 없습니다.")
         if (penaltyMessage.player == PlayerType.RED) {
             match = matchService.penaltyRed(match)
         } else {
             match = matchService.penaltyBlue(match)
         }
-        return MatchMessage.PenaltyResponseMessage(match)
+        return MatchMessage.ScoreResponseMessage(match)
     }
 
     @MessageMapping("/ping")

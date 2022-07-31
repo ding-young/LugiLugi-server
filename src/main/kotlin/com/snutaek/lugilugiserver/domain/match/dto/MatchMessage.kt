@@ -7,6 +7,7 @@ import com.snutaek.lugilugiserver.domain.match.util.PlayerType
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
+const val INVALID_SCORE = -404
 
 class MatchMessage {
     data class JoinMessage(
@@ -47,8 +48,8 @@ class MatchMessage {
     )
 
     data class JoinResponseMessage(
-        val userId: String,  // id
-        val inviteCode: String,
+        var userId: String = "",  // id
+        var inviteCode: String = "",
         val type: MatchMessageType,
         var errorType: String = "Success",
         var detail: String = "정의된 에러가 발생하지 않았습니다."
@@ -61,26 +62,18 @@ class MatchMessage {
     }
 
     data class ScoreResponseMessage(
-        val redScore: Int,
-        val blueScore: Int,
+        var redScore: Int = INVALID_SCORE,
+        var redPenalty: Int = INVALID_SCORE,
+        var blueScore: Int = INVALID_SCORE,
+        var bluePenalty: Int = INVALID_SCORE,
         var errorType: String = "Success",
         var detail: String = "정의된 에러가 발생하지 않았습니다."
     ) {
         constructor(match: Match) : this(
             redScore = match.redScore,
-            blueScore = match.blueScore
-        )
-    }
-
-    data class PenaltyResponseMessage(
-        val redPenalty: Int,
-        val bluePenalty: Int,
-        var errorType: String = "Success",
-        var detail: String = "정의된 에러가 발생하지 않았습니다."
-    ) {
-        constructor(match: Match) : this(
             redPenalty = match.redPenalty,
-            bluePenalty = match.bluePenalty
+            blueScore = match.blueScore,
+            bluePenalty = match.bluePenalty,
         )
     }
 }
