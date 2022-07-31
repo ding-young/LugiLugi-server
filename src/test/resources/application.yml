@@ -6,7 +6,12 @@ app:
   jwt:
     jwt-secret-key: lugilugi
     jwt-expiration-in-ms: 10800000
-
+aws:
+  access-key: secret><
+  secret-key: topsecret>.<
+  s3:
+    endpoint: endpoint
+    bucket: bucket
 ---
 
 spring:
