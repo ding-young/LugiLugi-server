@@ -48,7 +48,7 @@ class MatchMessageController (
     fun scoreMatch(@Payload judgeMessage: MatchMessage.JudgeMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
             ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail ="{$inviteCode} 에 해당하는 match 가 없습니다.")
-        if (match.flowType == FlowType.STOP) return MatchMessage.ScoreResponseMessage(errorType = "MATCH_FLOW_STOP", detail ="경기 중단 중에 점수를 매길 수 없습니다.")
+        //if (match.flowType == FlowType.STOP) return MatchMessage.ScoreResponseMessage(errorType = "MATCH_FLOW_STOP", detail ="경기 중단 중에 점수를 매길 수 없습니다.")
 
         match = if (judgeMessage.player == PlayerType.RED) {
             matchService.scoreRed(match, judgeMessage.score.toInt())
@@ -64,7 +64,7 @@ class MatchMessageController (
     fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
             ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail = "{$inviteCode} 에 해당하는 match 가 없습니다.")
-        if (match.flowType == FlowType.STOP) return MatchMessage.ScoreResponseMessage(errorType = "MATCH_FLOW_STOP", detail ="경기 중단 중에 점수를 매길 수 없습니다.")
+        //if (match.flowType == FlowType.STOP) return MatchMessage.ScoreResponseMessage(errorType = "MATCH_FLOW_STOP", detail ="경기 중단 중에 점수를 매길 수 없습니다.")
 
         match = if (penaltyMessage.player == PlayerType.RED) {
             matchService.penaltyRed(match)
