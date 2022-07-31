@@ -39,6 +39,7 @@ class MatchMessageController (
         if (joinMessage.type == MatchMessageType.JUDGE) {
             val judge = userService.findById(joinMessage.userId.toLong())
             matchService.assignJudge(judge, joinMessage.inviteCode)  // how to check?
+            print("original message was ${joinMessage.type}, ${joinMessage.userId}, ${joinMessage.inviteCode}, " )
         }
         return joinMessage
     }
@@ -53,10 +54,13 @@ class MatchMessageController (
     @SendTo("/subscribe/{inviteCode}")
     fun scoreMatch(@Payload judgeMessage: MatchMessage.JudgeMessage, @PathVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
+        print("match found")
         if (judgeMessage.player == PlayerType.RED) {
             match = matchService.scoreRed(match, judgeMessage.score.toInt())
+            print("Red got score and redname is ${match.red.username}")
         } else {
             match = matchService.scoreBlue(match, judgeMessage.score.toInt())
+            print("Blue got score and bluename is ${match.blue.username}")
         }
         return MatchMessage.ScoreResponseMessage(match)
     }
