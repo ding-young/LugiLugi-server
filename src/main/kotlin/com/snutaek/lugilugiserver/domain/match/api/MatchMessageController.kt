@@ -54,7 +54,7 @@ class MatchMessageController (
     @SendTo("/subscribe/{inviteCode}")
     fun scoreMatch(@Payload judgeMessage: MatchMessage.JudgeMessage, @PathVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
-        print("match found")
+            ?: return MatchMessage.ScoreResponseMessage(-1, -1, "MATCH_NOT_FOUND", "{$inviteCode} 에 해당하는 match 가 없습니다.")
         if (judgeMessage.player == PlayerType.RED) {
             match = matchService.scoreRed(match, judgeMessage.score.toInt())
             print("Red got score and redname is ${match.red.username}")
@@ -70,6 +70,7 @@ class MatchMessageController (
     @SendTo("/subscribe/{inviteCode}")
     fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @PathVariable inviteCode:String): MatchMessage.PenaltyResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
+            ?: return MatchMessage.PenaltyResponseMessage(404, 404, "MATCH_NOT_FOUND", "{$inviteCode} 에 해당하는 match 가 없습니다.")
         if (penaltyMessage.player == PlayerType.RED) {
             match = matchService.penaltyRed(match)
         } else {

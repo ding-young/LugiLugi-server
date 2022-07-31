@@ -39,12 +39,13 @@ class MatchService (
         return matchRepository.findByIdOrNull(id) ?: throw MatchNotFoundException("Match $id 에 해당하는 Match는 존재하지 않습니다")
     }
 
-    fun findByInviteCode(inviteCode: String) : Match {
-        return matchRepository.findMatchByInviteCode(inviteCode) ?: throw MatchNotFoundException("Match $inviteCode 에 해당하는 Match는 존재하지 않습니다")
+    fun findByInviteCode(inviteCode: String) : Match? {
+        return matchRepository.findMatchByInviteCode(inviteCode) // throw MatchNotFoundException("Match $inviteCode 에 해당하는 Match는 존재하지 않습니다")
     }
 
     fun assignJudge(judge: User, inviteCode: String) : Unit {
         val match = findByInviteCode(inviteCode)
+        if (match == null) return
         match.judge = judge
         matchRepository.save(match)
     }
