@@ -49,6 +49,8 @@ class MatchMessage {
     data class ScoreResponseMessage(
         val redScore: Int,
         val blueScore: Int,
+        var errorType: String = "Success",
+        var detail: String = "정의된 에러가 발생하지 않았습니다."
     ) {
         constructor(match: Match) : this(
             redScore = match.redScore,
@@ -59,6 +61,8 @@ class MatchMessage {
     data class PenaltyResponseMessage(
         val redPenalty: Int,
         val bluePenalty: Int,
+        var errorType: String = "Success",
+        var detail: String = "정의된 에러가 발생하지 않았습니다."
     ) {
         constructor(match: Match) : this(
             redPenalty = match.redPenalty,
