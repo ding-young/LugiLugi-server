@@ -51,11 +51,13 @@ class MatchService (
 
     fun scoreRed(match: Match, score: Int) : Match {
         match.redScore += score
+        print("matchservice score Red works fine?")
         return matchRepository.save(match)
     }
 
     fun scoreBlue(match: Match, score: Int) : Match {
         match.blueScore += score
+        print("matchservice score Blue works fine?")
         return matchRepository.save(match)
     }
 
