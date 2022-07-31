@@ -26,6 +26,7 @@ class UserDto {
         val username: String,
         val nickname: String,
         val code: String,
+        val image: String?,
     ) {
         constructor(user: User) : this(
             id = user.id,
@@ -33,6 +34,7 @@ class UserDto {
             username = user.username,
             nickname = user.nickname,
             code = user.code,
+            image = user.profileS3ObjectKey
         )
 
     }
