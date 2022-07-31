@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile
 class ImageController(
     private val imageService: ImageService
 ) {
-    @RequestMapping("/profile/me/")  // Should it be in userController..?
+    @RequestMapping("/me/")  // Should it be in userController..?
     @ResponseStatus(HttpStatus.CREATED)
     fun uploadUserProfileImage(
         @CurrentUser user: User,

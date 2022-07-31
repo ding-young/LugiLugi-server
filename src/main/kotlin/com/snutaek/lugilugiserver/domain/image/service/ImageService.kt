@@ -37,10 +37,6 @@ class AWSConfiguration {
 class ImageService(
     private val userRepository: UserRepository
 ) {
-    @Value("\${aws.access-key}")
-    final lateinit var accessKey: String
-    @Value("\${aws.secret-key}")
-    final lateinit var secretKey: String
     @Value("\${aws.s3.bucket}")
     lateinit var bucketName: String
     @Value("\${aws.s3.endpoint}")
