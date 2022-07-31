@@ -1,6 +1,6 @@
 package com.snutaek.lugilugiserver.domain.match.util
 
-enum class FlowMessageType {
+enum class FlowType {
     START,
     STOP
 }

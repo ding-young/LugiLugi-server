@@ -1,6 +1,7 @@
 package com.snutaek.lugilugiserver.domain.match.dto
 
 import com.snutaek.lugilugiserver.domain.match.model.Match
+import com.snutaek.lugilugiserver.domain.match.util.FlowType
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
@@ -52,7 +53,8 @@ class MatchDto {
         val judgeCount: Int,
         val roundCount: Int,
         val roundTime: Int,
-        val breakTime: Int
+        val breakTime: Int,
+        val flowType: FlowType,
     ) {
         constructor(match: Match) : this(
             id = match.id,
@@ -62,7 +64,8 @@ class MatchDto {
             judgeCount = match.judgeCount,
             roundCount = match.roundCount,
             roundTime = match.roundTime,
-            breakTime = match.breakTime
+            breakTime = match.breakTime,
+            flowType = match.flowType
         )
     }
 }

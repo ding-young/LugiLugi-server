@@ -3,7 +3,7 @@ package com.snutaek.lugilugiserver.domain.match.api
 import com.snutaek.lugilugiserver.domain.match.dto.MatchDto
 import com.snutaek.lugilugiserver.domain.match.dto.MatchMessage
 import com.snutaek.lugilugiserver.domain.match.service.MatchService
-import com.snutaek.lugilugiserver.domain.match.util.FlowMessageType
+import com.snutaek.lugilugiserver.domain.match.util.FlowType
 import com.snutaek.lugilugiserver.domain.match.util.MatchMessageType
 import com.snutaek.lugilugiserver.domain.match.util.PlayerType
 import com.snutaek.lugilugiserver.domain.user.exception.UserNotFoundException
@@ -36,8 +36,11 @@ class MatchMessageController (
 
     @MessageMapping("/{inviteCode}/flow")
     @SendTo("/subscribe/{inviteCode}")
-    fun controlMatchFlow(@Payload flowMessage: MatchMessage.FlowMessage, @DestinationVariable inviteCode:String): MatchMessage.SimpleMessage {
-        return MatchMessage.SimpleMessage("flow") // flowMessage
+    fun controlMatchFlow(@Payload flowMessage: MatchMessage.FlowMessage, @DestinationVariable inviteCode:String): MatchMessage.FlowResponseMessage {
+        var match = matchService.findByInviteCode(inviteCode)
+            ?: return MatchMessage.FlowResponseMessage(FlowType.STOP, errorType = "MATCH_NOT_FOUND", detail ="{$inviteCode} 에 해당하는 match 가 없습니다.")
+        // TODO check judge
+        return MatchMessage.FlowResponseMessage(matchService.controlFlow(match, flowMessage.flowtype)) // flowMessage
     }
 
     @MessageMapping("/{inviteCode}/score")
@@ -45,6 +48,8 @@ class MatchMessageController (
     fun scoreMatch(@Payload judgeMessage: MatchMessage.JudgeMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
             ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail ="{$inviteCode} 에 해당하는 match 가 없습니다.")
+        if (match.flowType == FlowType.STOP) return MatchMessage.ScoreResponseMessage(errorType = "MATCH_FLOW_STOP", detail ="경기 중단 중에 점수를 매길 수 없습니다.")
+
         match = if (judgeMessage.player == PlayerType.RED) {
             matchService.scoreRed(match, judgeMessage.score.toInt())
         } else {
@@ -59,6 +64,8 @@ class MatchMessageController (
     fun penaltyMatch(@Payload penaltyMessage: MatchMessage.PenaltyMessage, @DestinationVariable inviteCode:String): MatchMessage.ScoreResponseMessage {
         var match = matchService.findByInviteCode(inviteCode)
             ?: return MatchMessage.ScoreResponseMessage(errorType = "MATCH_NOT_FOUND", detail = "{$inviteCode} 에 해당하는 match 가 없습니다.")
+        if (match.flowType == FlowType.STOP) return MatchMessage.ScoreResponseMessage(errorType = "MATCH_FLOW_STOP", detail ="경기 중단 중에 점수를 매길 수 없습니다.")
+
         match = if (penaltyMessage.player == PlayerType.RED) {
             matchService.penaltyRed(match)
         } else {

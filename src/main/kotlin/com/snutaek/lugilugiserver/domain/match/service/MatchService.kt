@@ -8,6 +8,7 @@ import com.snutaek.lugilugiserver.domain.match.dto.MatchDto
 import com.snutaek.lugilugiserver.domain.match.exception.MatchNotFoundException
 import com.snutaek.lugilugiserver.domain.match.model.Match
 import com.snutaek.lugilugiserver.domain.match.repository.MatchRepository
+import com.snutaek.lugilugiserver.domain.match.util.FlowType
 import com.snutaek.lugilugiserver.domain.match.util.RandomInviteCodeGenerator
 import com.snutaek.lugilugiserver.domain.user.exception.UserNotFoundException
 import com.snutaek.lugilugiserver.domain.user.model.User
@@ -47,6 +48,11 @@ class MatchService (
         val match = findByInviteCode(inviteCode) ?: return
         match.judge = judge
         matchRepository.save(match)
+    }
+
+    fun controlFlow(match: Match, flowStatus: FlowType) : Match {
+        match.flowType = flowStatus
+        return matchRepository.save(match)
     }
 
     fun scoreRed(match: Match, score: Int) : Match {
