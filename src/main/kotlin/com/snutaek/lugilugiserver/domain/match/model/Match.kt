@@ -54,5 +54,8 @@ class Match (
     @field:NotBlank
     val inviteCode : String,
 
-    var flowType : FlowType = FlowType.STOP
+    var flowType : FlowType = FlowType.STOP,
+
+    var finished : Boolean = false
+
 ) : BaseTimeEntity()

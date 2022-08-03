@@ -26,16 +26,24 @@ class MatchController (
         return MatchDto.BaseResponse(match)
     }
 
+    // 이거 안 쓰나 ??
     @GetMapping("/{matchId}/")
     fun getMatch(@PathVariable matchId: Long) : MatchDto.DetailResponse {
         val match = matchService.findById(matchId)
         return MatchDto.DetailResponse(match)
     }
 
-    // api for debugging..
+    // api for debugging.. 였는데..
     @GetMapping("/inviteCode/{inviteCode}/")
     fun getMatch(@PathVariable inviteCode: String) : MatchDto.DetailResponse {
         val match = matchService.findByInviteCode(inviteCode) ?: throw MatchNotFoundException("해당하는 match 못찾음")
         return MatchDto.DetailResponse(match)
+    }
+
+    // 이 이후에 경기 기록 자체를 불변하게 할 수 있나? 그래야 하나 ?
+    @PostMapping("/inviteCode/{inviteCode}/finish/")
+    fun finishMatch(@PathVariable inviteCode: String) : MatchDto.DetailResponse {
+        val match = matchService.findByInviteCode(inviteCode) ?: throw MatchNotFoundException("해당하는 match 못찾음")
+        return MatchDto.DetailResponse(matchService.finishMatch(match))
     }
 }

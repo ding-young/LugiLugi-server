@@ -78,4 +78,9 @@ class MatchService (
         match.redScore += 1
         return matchRepository.save(match)
     }
+
+    fun finishMatch(match: Match) : Match {
+        match.finished = true
+        return matchRepository.save(match)
+    }
 }
