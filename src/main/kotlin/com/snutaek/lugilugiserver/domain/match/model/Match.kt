@@ -2,10 +2,12 @@ package com.snutaek.lugilugiserver.domain.match.model
 
 
 import com.snutaek.lugilugiserver.domain.match.util.FlowType
+import com.snutaek.lugilugiserver.domain.match.util.PlayerType
 import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
 import com.snutaek.lugilugiserver.domain.user.model.User
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 import javax.persistence.Table
 import javax.validation.constraints.Max
@@ -16,15 +18,15 @@ import javax.validation.constraints.NotNull
 @Entity
 @Table(name = "lugi_match")
 class Match (
-    @OneToOne   // later there will be multiple judges
+    @ManyToOne  // later there will be multiple judges
     var judge: User?,
 
     @field:NotNull
-    @OneToOne
+    @ManyToOne
     val red: User,
 
     @field:NotNull
-    @OneToOne
+    @ManyToOne
     val blue: User,
 
     var redScore: Int = 0,
@@ -53,5 +55,10 @@ class Match (
     @field:NotBlank
     val inviteCode : String,
 
-    var flowType : FlowType = FlowType.STOP
+    var flowType : FlowType = FlowType.STOP,
+
+    var finished : Boolean = false,
+
+    var winner : PlayerType? = null  // TODO Hmmmmmm.....
+
 ) : BaseTimeEntity()
