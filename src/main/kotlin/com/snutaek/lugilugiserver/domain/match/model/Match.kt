@@ -2,6 +2,7 @@ package com.snutaek.lugilugiserver.domain.match.model
 
 
 import com.snutaek.lugilugiserver.domain.match.util.FlowType
+import com.snutaek.lugilugiserver.domain.match.util.PlayerType
 import com.snutaek.lugilugiserver.domain.model.BaseTimeEntity
 import com.snutaek.lugilugiserver.domain.user.model.User
 import javax.persistence.Column
@@ -56,6 +57,8 @@ class Match (
 
     var flowType : FlowType = FlowType.STOP,
 
-    var finished : Boolean = false
+    var finished : Boolean = false,
+
+    var winner : PlayerType? = null  // TODO Hmmmmmm.....
 
 ) : BaseTimeEntity()

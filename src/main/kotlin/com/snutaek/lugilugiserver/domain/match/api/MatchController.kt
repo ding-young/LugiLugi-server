@@ -4,6 +4,7 @@ import com.snutaek.lugilugiserver.domain.group.dto.GroupDto
 import com.snutaek.lugilugiserver.domain.match.dto.MatchDto
 import com.snutaek.lugilugiserver.domain.match.exception.MatchNotFoundException
 import com.snutaek.lugilugiserver.domain.match.service.MatchService
+import com.snutaek.lugilugiserver.domain.user.service.UserService
 import com.snutaek.lugilugiserver.global.common.dto.ListResponse
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("api/v1/match")
 @RestController
 class MatchController (
-    private val matchService: MatchService
+    private val matchService: MatchService,
+    private val userService: UserService
 ) {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
@@ -45,5 +47,14 @@ class MatchController (
     fun finishMatch(@PathVariable inviteCode: String) : MatchDto.DetailResponse {
         val match = matchService.findByInviteCode(inviteCode) ?: throw MatchNotFoundException("해당하는 match 못찾음")
         return MatchDto.DetailResponse(matchService.finishMatch(match))
+    }
+
+    @GetMapping("/record/{userId}/")
+    fun getUserMatchRecords(@PathVariable userId: Long) : MatchDto.MatchListResponse {
+        val user = userService.findById(userId)
+        val matches = user.matches_red + user.matches_blue
+        val finishedMatches = matches.filter { it.finished }.sortedBy { it.createdAt }
+        val responses = MatchDto.MatchListResponse(finishedMatches, user.username)
+        return responses.setResultCounts()
     }
 }

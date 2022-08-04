@@ -9,6 +9,7 @@ import com.snutaek.lugilugiserver.domain.match.exception.MatchNotFoundException
 import com.snutaek.lugilugiserver.domain.match.model.Match
 import com.snutaek.lugilugiserver.domain.match.repository.MatchRepository
 import com.snutaek.lugilugiserver.domain.match.util.FlowType
+import com.snutaek.lugilugiserver.domain.match.util.PlayerType
 import com.snutaek.lugilugiserver.domain.match.util.RandomInviteCodeGenerator
 import com.snutaek.lugilugiserver.domain.user.exception.UserNotFoundException
 import com.snutaek.lugilugiserver.domain.user.model.User
@@ -81,6 +82,10 @@ class MatchService (
 
     fun finishMatch(match: Match) : Match {
         match.finished = true
+        // 코드 끔찍함 .. 공부 제대로 하고 바꾸기
+        match.winner = if (match.redScore > match.blueScore) {PlayerType.RED}
+        else if (match.redScore < match.blueScore) {PlayerType.BLUE}
+        else {null}
         return matchRepository.save(match)
     }
 }
