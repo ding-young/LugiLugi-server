@@ -6,10 +6,7 @@ import com.snutaek.lugilugiserver.domain.user.model.User
 import com.snutaek.lugilugiserver.domain.user.service.UserService
 import com.snutaek.lugilugiserver.global.auth.CurrentUser
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestPart
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
@@ -17,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile
 class ImageController(
     private val imageService: ImageService,
 ) {
-    @RequestMapping("/me/")  // Should it be in userController..?
+    @PostMapping("/me/")  // Should it be in userController..?
     @ResponseStatus(HttpStatus.CREATED)
     fun uploadUserProfileImage(
         @CurrentUser user: User,
@@ -26,7 +23,7 @@ class ImageController(
         return ImageDto.ImageUploadResponse(imageService.uploadUserProfileImage(image, user))
     }
 
-    @RequestMapping("/me/default/")  // Should it be in userController..?
+    @PostMapping("/me/default/")  // Should it be in userController..?
     fun setUserDefaultProfileImage(
         @CurrentUser user: User,
     ) : ImageDto.ImageUploadResponse {
