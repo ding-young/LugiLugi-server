@@ -5,6 +5,7 @@ import com.snutaek.lugilugiserver.domain.attendance.model.Schedule
 import com.snutaek.lugilugiserver.domain.attendance.repository.ScheduleRepository
 import com.snutaek.lugilugiserver.domain.attendance.model.Attendance
 import com.snutaek.lugilugiserver.domain.attendance.repository.AttendanceRepository
+import com.snutaek.lugilugiserver.domain.attendance.exception.AttendanceAlreadyExistsException
 import com.snutaek.lugilugiserver.domain.user.model.User
 import com.snutaek.lugilugiserver.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -22,7 +23,7 @@ class AttendanceService (
     }
 
     fun markAttendance(user: User, schedule: Schedule) : Attendance {
-        print("hi")
+        if (attendanceRepository.existsByUserAndSchedule(user, schedule)) throw AttendanceAlreadyExistsException("이미 출석체크를 완료했습니다")
         return attendanceRepository.save(Attendance(user, schedule))
     }
 

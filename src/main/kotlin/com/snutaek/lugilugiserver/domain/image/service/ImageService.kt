@@ -41,6 +41,8 @@ class ImageService(
     lateinit var bucketName: String
     @Value("\${aws.s3.endpoint}")
     lateinit var s3Endpoint: String
+    @Value("\${aws.s3.endpoint}")
+    lateinit var defaultProfileImagePath: String
 
     @Autowired
     lateinit var amazonS3: AmazonS3
@@ -64,5 +66,12 @@ class ImageService(
         user.profileS3ObjectKey = imageS3url
         userRepository.save(user)
         return imageS3url
+    }
+
+    fun setUserDefaultProfileImage(user: User): String? {
+        // val defaultImageS3Url = "${s3Endpoint}/${defaultProfileImagePath}"
+        user.profileS3ObjectKey = null
+        userRepository.save(user)
+        return null
     }
 }
