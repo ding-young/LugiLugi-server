@@ -68,10 +68,10 @@ class ImageService(
         return imageS3url
     }
 
-    fun setUserDefaultProfileImage(user: User): String {
-        val defaultImageS3Url = "${s3Endpoint}/${defaultProfileImagePath}"
-        user.profileS3ObjectKey = defaultImageS3Url
+    fun setUserDefaultProfileImage(user: User): String? {
+        // val defaultImageS3Url = "${s3Endpoint}/${defaultProfileImagePath}"
+        user.profileS3ObjectKey = null
         userRepository.save(user)
-        return defaultImageS3Url
+        return null
     }
 }
