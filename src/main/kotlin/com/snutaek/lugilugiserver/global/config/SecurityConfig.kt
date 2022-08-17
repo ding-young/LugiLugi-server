@@ -60,6 +60,7 @@ class SecurityConfig(
         corsConfiguration.addAllowedOrigin("http://localhost:3000") // TODO front url
         corsConfiguration.addAllowedOrigin("http://localhost:8080") //
         corsConfiguration.addAllowedOrigin("https://d3rvdfuvmiieqv.cloudfront.net") // TODO front url
+        corsConfiguration.addAllowedOrigin("https://lugilugi.shop") //
         corsConfiguration.addAllowedOrigin(mobile) // TODO front url
         corsConfiguration.addAllowedHeader("*")
         corsConfiguration.addAllowedMethod("*")
